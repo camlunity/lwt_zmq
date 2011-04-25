@@ -1,0 +1,32 @@
+OASISFormat: 0.2
+Name:        lwt_zmq
+Version:     0.0.1b
+Synopsis:    zmq sockets for lwt async framewrok
+Authors:     Roma Sokolov
+License:     MIT
+LicenseFile: LICENSE
+Plugins:     DevFiles (0.2), META (0.2), StdFiles (0.2)
+BuildTools: ocamlbuild
+
+Library "lwt-zmq"
+  Path:            src
+  Modules:         Lwt_zmq
+  BuildDepends:    lwt, lwt.unix, ZMQ
+  NativeOpt:       -w @a
+  ByteOpt:         -w @a
+
+
+Executable relay
+  Path:            tests
+  MainIs:          relay.ml
+  NativeOpt:       -w @a
+  ByteOpt:         -w @a
+  BuildDepends:    lwt, lwt.unix, ZMQ
+  Install:         false
+  CompiledObject:  byte
+
+
+SourceRepository github
+  Type:     git
+  Location: git://github.com/camlunity/lwt_zmq.git
+  Browser:  https://github.com/camlunity/lwt_zmq
