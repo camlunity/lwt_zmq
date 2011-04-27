@@ -9,5 +9,4 @@ val zmq_connect : 'a zmq_sock -> string -> unit
 
 val zmq_recv : 'a zmq_sock -> string Lwt.t
 
-val zmq_send :
-  ?opt:ZMQ.Socket.snd_option -> 'a zmq_sock -> string -> unit Lwt.t
+val zmq_send : 'a zmq_sock -> string -> unit Lwt.t

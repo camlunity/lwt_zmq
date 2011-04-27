@@ -18,9 +18,9 @@ let wrap_zmqcall event z action =
       register_action event z.fd action
   with
     | Retry
-    | Unix.Unix_error((Unix.EAGAIN | Unix.EWOULDBLOCK | Unix.EINTR), _, _)
+    | ZMQ.ZMQ_exception (ZMQ.EAGAIN, _)
     | Sys_blocked_io ->
-        (* The action could not be completed immediatly, register it: *)
+      (* The action could not be completed immediatly, register it: *)
       register_action event z.fd action
     | Retry_read ->
       register_action Read z.fd action
@@ -37,16 +37,14 @@ let zmq_bind z addr =
   Lwt_unix.check_descriptor z.fd;
   ZMQ.Socket.bind z.sock addr
 
-let zmq_bind z addr =
-  Lwt_unix.check_descriptor z.fd;
-  ZMQ.Socket.bind z.sock addr
-
 let zmq_connect z addr =
   Lwt_unix.check_descriptor z.fd;
   ZMQ.Socket.connect z.sock addr
 
 let zmq_recv z =
-  wrap_zmqcall Lwt_unix.Read z (fun () -> ZMQ.Socket.recv z.sock)
+  wrap_zmqcall Lwt_unix.Read z (fun () ->
+    ZMQ.Socket.recv ~opt:ZMQ.Socket.R_no_block z.sock)
 
-let zmq_send ?opt z s =
-  wrap_zmqcall Lwt_unix.Write z (fun () -> ZMQ.Socket.send ?opt:opt z.sock s)
+let zmq_send z s =
+  wrap_zmqcall Lwt_unix.Write z (fun () ->
+    ZMQ.Socket.send ~opt:ZMQ.Socket.S_no_block z.sock s)
