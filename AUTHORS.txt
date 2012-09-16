@@ -1,5 +1,0 @@
-(* OASIS_START *)
-(* DO NOT EDIT (digest: 95826e936a6c5a9f1637c9758822a251) *)
-Authors of lwt_zmq
-Roma Sokolov
-(* OASIS_STOP *)
